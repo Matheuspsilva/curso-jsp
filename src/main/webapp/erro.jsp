@@ -4,14 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Tela de erro</title>
 </head>
 <body>
+<h1>Mensagem de Erro, entre em contato com o suporte.</h1>
 
-	<% 
-		String nome = request.getParameter("nome");
-		out.print(nome);
-	%>
-
+<% 
+ out.print(request.getAttribute("msg"));
+ %>
 </body>
 </html>

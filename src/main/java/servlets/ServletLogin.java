@@ -43,7 +43,6 @@ public class ServletLogin extends HttpServlet {
 				ModelLogin modelLogin = new ModelLogin();
 				modelLogin.setLogin(login);
 				modelLogin.setSenha(senha);
-				System.out.println(modelLogin);
 				if (daoLoginRepository.validarAutenticacao(modelLogin)) {
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
 
@@ -60,6 +59,7 @@ public class ServletLogin extends HttpServlet {
 					redirecionar.forward(request, response);
 				}
 			} else {
+			
 				RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
 				request.setAttribute("msg", "Informe o login e senha corretamente");
 				redirecionar.forward(request, response);
@@ -67,6 +67,9 @@ public class ServletLogin extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e);
+			redirecionar.forward(request, response);
 		}
 
 	}
