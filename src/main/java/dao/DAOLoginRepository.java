@@ -14,18 +14,13 @@ public class DAOLoginRepository {
 	
 	public DAOLoginRepository() {
 		connection = SingleConnectionBanco.getConnection();
-		System.out.println(connection);
 	}
 	
 	public boolean validarAutenticacao(ModelLogin modelLogin ) throws SQLException {
 		
-		System.out.println(connection);
-		
 		String sql = "select * from model_login where login = ? and senha = ? ";
 		
 		PreparedStatement statement = connection.prepareStatement(sql);
-		
-		System.out.println(statement);
 		
 		statement.setString(1, modelLogin.getLogin());
 		statement.setString(2, modelLogin.getSenha());
