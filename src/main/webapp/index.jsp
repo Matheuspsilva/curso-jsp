@@ -62,7 +62,7 @@ body {
 <body class="text-center">
 	<main class="form-signin">
 		<h1 class="h3 mb-3 fw-normal">Bem vindo ao Curso JSP</h1>
-		<form action="ServletLogin" class="needs-validation" method="post"
+		<form action="<%= request.getContextPath() %>/ServletLogin" class="needs-validation" method="post"
 			novalidate>
 			<input type="hidden" name="url"
 				value="<%=request.getParameter("url")%>">
