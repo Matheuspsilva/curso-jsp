@@ -33,8 +33,8 @@
 											<div class="card-block">
 												<h4 class="sub-title">Cadastro de usuário</h4>
 
-												<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post">
-													<div class="form-group form-default">
+												<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
+													<div class="form-group form-default form-static-label">
 														<input type="text" name="id" id="id" class="form-control"
 															readonly="readonly" value="${modelLogin.id}"> <span class="form-bar"></span>
 														<label class="float-label">ID: </label>
@@ -61,25 +61,10 @@
 															autocomplete="off" value="${modelLogin.senha}"> <span class="form-bar"></span>
 														<label class="float-label">Password</label>
 													</div>
-													<button type="submit"
-														class="btn btn-primary waves-effect waves-light">Enviar</button>
-
-													<button class="btn btn-primary waves-effect waves-light">Primary
-														Button</button>
-													<button class="btn btn-success waves-effect waves-light">Success
-														Button</button>
-													<button class="btn btn-info waves-effect waves-light">Info
-														Button</button>
-													<button class="btn btn-warning waves-effect waves-light">Warning
-														Button</button>
-													<button class="btn btn-danger waves-effect waves-light">Danger
-														Button</button>
-													<button class="btn btn-inverse waves-effect waves-light">Inverse
-														Button</button>
-													<button
-														class="btn btn-disabled disabled waves-effect waves-light">Disabled
-														Button</button>
-
+													<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm();" > Novo </button>
+													<button type="submit" class="btn btn-success waves-effect waves-light">Salvar </button>
+													<button class="btn btn-info waves-effect waves-light"> Excluir </button>
+													
 												</form>
 											</div>
 										</div>
@@ -101,6 +86,15 @@
 
 	<!-- Required Jquery -->
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
+	<script type="text/javascript">
+	function limparForm(){
+		var elementos = document.getElementById("formUser").elements; // Retorna os elementos html do form
+		
+		for(p = 0; p < elementos.length; p++){
+			elementos[p].value = '';
+		}
+	}
+	</script>
 </body>
 
 </html>
