@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -151,6 +152,10 @@
 	<!-- Required Jquery -->
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	<script type="text/javascript">
+		function verEditar(id){
+			var urlAction = document.getElementById('formUser').action;
+			window.location.href = urlAction + '?acao=buscarEditar&id=' + id; 
+		}
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 
@@ -180,7 +185,7 @@
 																	+ json[p].id
 																	+ '  </td> <td>'
 																	+ json[p].nome
-																	+ '  </td> <td> <button class="btn btn-info waves-effect waves-light" >Ver</button>  </td> </tr>');
+																	+ '  </td> <td> <button class="btn btn-info waves-effect waves-light" onclick="verEditar('+ json[p].id +')" >Ver</button>  </td> </tr>');
 										}
 										document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
 									}
