@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import ="model.*" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,6 +59,44 @@
 														</label>
 													</div>
 													<div class="form-group form-default">
+														<select class="form-control"
+															aria-label="Default select example" name="perfil">
+															<option disabled="disabled">Selecione o perfil</option>
+															
+															<option value="ADMIN"
+															<% 
+																ModelLogin modelLogin = (ModelLogin)request.getAttribute("modelLogin");
+																if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
+																	out.print(" ");
+																	out.print("selected=\"selected\"");
+																	out.print(" ");
+																}
+															
+															%>>Admin</option>
+															
+															<option value="SECRETARIA" <%
+															modelLogin = (ModelLogin)request.getAttribute("modelLogin");
+															if(modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")){
+																out.print(" ");
+																out.print("selected=\"selected\"");
+																out.print(" ");
+															}
+															%>>Secretária</option>
+															
+															<option value="AUXILIAR" <%
+															modelLogin = (ModelLogin)request.getAttribute("modelLogin");
+															if(modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")){
+																out.print(" ");
+																out.print("selected=\"selected\"");
+																out.print(" ");
+															}
+															%>>Auxiliar</option>
+														</select>
+														 <span
+															class="form-bar"></span> <label class="float-label">Perfil:
+														</label>
+													</div>
+													<div class="form-group form-default">
 														<input type="text" name="login" id="login"
 															class="form-control" required="required"
 															value="${modelLogin.login}"> <span
@@ -69,6 +108,28 @@
 															autocomplete="off" value="${modelLogin.senha}"> <span
 															class="form-bar"></span> <label class="float-label">Password</label>
 													</div>
+													<div class="form-group form-default">
+														  <input class="" type="radio" name="sexo" id="masculino" value="MASCULINO" <%
+															modelLogin = (ModelLogin)request.getAttribute("modelLogin");
+															if(modelLogin != null && modelLogin.getSexo().equals("MASCULINO")){
+																out.print(" ");
+																out.print("checked=\"checked\"");
+																out.print(" ");
+															}
+															%>>
+														  <label class="" for="Masculino">Masculino</label>
+						
+														  <input class="" type="radio" name="sexo" id="feminino" value="FEMININO" <%
+															modelLogin = (ModelLogin)request.getAttribute("modelLogin");
+															if(modelLogin != null && modelLogin.getSexo().equals("FEMININO")){
+																out.print(" ");
+																out.print("checked=\"checked\"");
+																out.print(" ");
+															}
+															%>>
+														  <label class="" for="Feminino">Feminino</label>
+													</div>
+													
 													<button type="button"
 														class="btn btn-primary waves-effect waves-light"
 														onclick="limparForm();">Novo</button>
@@ -102,7 +163,8 @@
 													<tr>
 														<th><c:out value="${ ml.id }"></c:out></th>
 														<th><c:out value="${ ml.nome }"></c:out></th>
-														<th><a class="btn btn-primary" href="<%=request.getContextPath()%>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}" >Ver</a></th>
+														<th><a class="btn btn-primary"
+															href="<%=request.getContextPath()%>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></th>
 													</tr>
 												</c:forEach>
 											</tbody>

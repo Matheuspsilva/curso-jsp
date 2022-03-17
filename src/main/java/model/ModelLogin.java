@@ -12,7 +12,25 @@ public class ModelLogin implements Serializable {
 	private String login;
 	private String senha;
 	private boolean useradmin;
+	private String perfil;
+	private String sexo;
 	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 	public boolean getUseradmin() {
 		return useradmin;
 	}
