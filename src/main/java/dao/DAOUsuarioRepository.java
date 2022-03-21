@@ -36,6 +36,21 @@ public class DAOUsuarioRepository {
 
 			preparedStatement.execute();
 			connection.commit();
+			
+			if(objeto.getFotouser() != null && !objeto.getFotouser().isEmpty()) {
+				sql = "update model_login set fotouser = ?, extensaofotouser=? where login =?";
+				
+				preparedStatement = connection.prepareStatement(sql); 
+				
+				preparedStatement.setString(1, objeto.getFotouser());
+				preparedStatement.setString(2, objeto.getExtensaofotouser());
+				preparedStatement.setString(3, objeto.getLogin());
+				
+				preparedStatement.execute();
+				
+				connection.commit();
+			}
+			
 		} else { // Atualizar
 			String sql = "UPDATE public.model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=? WHERE id =" + objeto.getId()
 					+ ";";
@@ -50,6 +65,20 @@ public class DAOUsuarioRepository {
 
 			preparedStatement.executeUpdate();
 			connection.commit();
+			
+			if(objeto.getFotouser() != null && !objeto.getFotouser().isEmpty()) {
+				sql = "update model_login set fotouser = ?, extensaofotouser=? where id =?";
+				
+				preparedStatement = connection.prepareStatement(sql); 
+				
+				preparedStatement.setString(1, objeto.getFotouser());
+				preparedStatement.setString(2, objeto.getExtensaofotouser());
+				preparedStatement.setLong(3, objeto.getId());
+				
+				preparedStatement.execute();
+				
+				connection.commit();
+			}
 		}
 
 		return this.consultarUsuario(objeto.getLogin(), userLogado);
@@ -134,6 +163,7 @@ public class DAOUsuarioRepository {
 			modelLogin.setUseradmin(resultado.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
+			modelLogin.setFotouser(resultado.getString("fotouser"));
 			
 		}
 
@@ -162,6 +192,7 @@ public class DAOUsuarioRepository {
 			modelLogin.setUseradmin(resultado.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
+			modelLogin.setFotouser(resultado.getString("fotouser"));
 
 		}
 
@@ -188,6 +219,7 @@ public class DAOUsuarioRepository {
 			modelLogin.setSenha(resultado.getString("senha"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
+			modelLogin.setFotouser(resultado.getString("fotouser"));
 
 		}
 
@@ -216,6 +248,8 @@ public class DAOUsuarioRepository {
 			modelLogin.setSenha(resultado.getString("senha"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
+			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resultado.getString("extensaofotouser"));
 
 		}
 
