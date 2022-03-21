@@ -97,11 +97,39 @@ public class DAOUsuarioRepository {
 		return this.consultarUsuario(objeto.getLogin(), userLogado);
 
 	}
+	
+	public List<ModelLogin> consultaUsuarioListPaginada(Long userLogado, Integer offset) throws Exception {
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * FROM model_login where useradmin is false and usuario_id = " + userLogado + "order by nome offset " + offset + " limit 5";
+
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+		ResultSet resultado = preparedStatement.executeQuery();
+
+		while (resultado.next()) {
+
+			ModelLogin modelLogin = new ModelLogin();
+
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setEmail(resultado.getString("email"));
+			// modelLogin.setSenha(resultado.getString("senha"));
+			modelLogin.setPerfil(resultado.getString("perfil"));
+			modelLogin.setSexo(resultado.getString("sexo"));
+
+			retorno.add(modelLogin);
+		}
+		
+		return retorno;
+
+	}
 
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * FROM model_login where useradmin is false and usuario_id = " + userLogado;
+		String sql = "SELECT * FROM model_login where useradmin is false and usuario_id = " + userLogado + "limit 5";
 
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -129,7 +157,7 @@ public class DAOUsuarioRepository {
 	public List<ModelLogin> consultaUsuarioList(String nome, Long userLogado) throws Exception {
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * FROM model_login WHERE upper(nome) LIKE upper(?) and useradmin is false and usuario_id = " + userLogado;
+		String sql = "SELECT * FROM model_login WHERE upper(nome) LIKE upper(?) and useradmin is false and usuario_id = " + userLogado + "limit 5";
 
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, "%" + nome + "%");
@@ -318,6 +346,32 @@ public class DAOUsuarioRepository {
 
 		preparedStatement.executeUpdate();
 		connection.commit();
+	}
+	
+	public int totalPagina(Long userLogado) throws Exception {
+		
+		String sql = "select count(1) as cadastros from model_login where usuario_id = " + userLogado;
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		ResultSet resultado = preparedStatement.executeQuery();
+		
+		resultado.next();
+		
+		Double cadastros = resultado.getDouble("cadastros");
+		
+		Double porpagina = 5.0;
+		
+		Double pagina = cadastros/porpagina;
+		
+		Double resto = pagina % 2;
+		
+		if(resto > 0) {
+			pagina++;
+		}
+		
+		return pagina.intValue();
+
 	}
 
 }
