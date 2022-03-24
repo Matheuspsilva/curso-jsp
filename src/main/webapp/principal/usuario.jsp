@@ -192,6 +192,10 @@
 													<button type="button"
 														class="btn btn-info waves-effect waves-light"
 														onclick="criarDeleteAjax()">Excluir</button>
+													<c:if test="${modelLogin.id > 0}">
+														<a href="<%= request.getContextPath() %>/ServletTelefone?iduser=${modelLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+													</c:if>
+								
 													<button type="button" class="btn btn-secondary"
 														data-toggle="modal" data-target="#exampleModal">
 														Pesquisar</button>
@@ -302,6 +306,16 @@
 	<!-- Required Jquery -->
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	<script type="text/javascript">
+	
+		
+		$('#numero').on('input', function (event) { 
+		    this.value = this.value.replace(/[^0-9]/g, '');
+		});
+		
+		$('#cep').on('input', function (event) { 
+		    this.value = this.value.replace(/[^0-9]/g, '');
+		});
+		
 		function pesquisaCep(){
 			var cep = $("#cep").val();
 			

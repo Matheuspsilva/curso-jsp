@@ -289,7 +289,39 @@ public class DAOUsuarioRepository {
 		return modelLogin;
 	}
 
-	
+	public ModelLogin consultarUsuarioId(Long id) throws Exception {
+
+		ModelLogin modelLogin = new ModelLogin();
+
+		String sql = "SELECT * FROM model_login WHERE id = ? and useradmin is false";
+
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, id);
+
+		ResultSet resultado = preparedStatement.executeQuery();
+
+		while (resultado.next()) { // Retorna apenas um usuário
+
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setSenha(resultado.getString("senha"));
+			modelLogin.setPerfil(resultado.getString("perfil"));
+			modelLogin.setSexo(resultado.getString("sexo"));
+			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resultado.getString("extensaofotouser"));
+			modelLogin.setCep(resultado.getString("cep"));
+			modelLogin.setLogradouro(resultado.getString("logradouro"));
+			modelLogin.setBairro(resultado.getString("bairro"));
+			modelLogin.setLocalidade(resultado.getString("localidade"));
+			modelLogin.setUf(resultado.getString("uf"));
+			modelLogin.setNumero(resultado.getString("numero"));
+
+		}
+
+		return modelLogin;
+	}
 	
 	public ModelLogin consultarUsuarioId(String id, Long userLogado) throws Exception {
 

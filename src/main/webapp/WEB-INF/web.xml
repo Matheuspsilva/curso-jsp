@@ -16,4 +16,10 @@
     <servlet-name>ServletUsuarioController</servlet-name>
     <servlet-class>servlets.ServletUsuarioController</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>ServletTelefone</display-name>
+    <servlet-name>ServletTelefone</servlet-name>
+    <servlet-class>servlets.ServletTelefone</servlet-class>
+  </servlet>
 </web-app>
