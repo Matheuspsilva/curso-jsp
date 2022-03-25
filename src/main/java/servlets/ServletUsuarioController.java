@@ -11,6 +11,8 @@ import jakarta.servlet.http.Part;
 import model.ModelLogin;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -146,6 +148,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String localidade = request.getParameter("localidade");
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
+			String dataNascimento = request.getParameter("dataNascimento");
+			String rendaMensal = request.getParameter("rendamensal");
+			
+			rendaMensal = rendaMensal.split("\\ ")[1].replaceAll("\\.","").replaceAll("\\,",".");
 
 			ModelLogin modelLogin = new ModelLogin();
 
@@ -175,6 +181,11 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
+			
+			Date dataConvertidaBanco = Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento)));
+			modelLogin.setDataNascimento(dataConvertidaBanco);
+			
+			modelLogin.setRendaMensal(Double.parseDouble(rendaMensal));
 
 			// Já existe? / É um novo usuário?
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {

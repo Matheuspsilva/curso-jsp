@@ -33,6 +33,8 @@
       <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/assets/css/jquery.mCustomScrollbar.css">
         <!-- am chart export.css -->
         <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <!-- Style.css -->
       <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/assets/css/style.css">
+      
   </head>
