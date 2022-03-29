@@ -1,28 +1,34 @@
 package servlets;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import model.ModelLogin;
-
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import model.ModelLogin;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import util.ReportUtil;
 
 @MultipartConfig
 @WebServlet(urlPatterns = { "/ServletUsuarioController" })
@@ -126,6 +132,24 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("dataInicial", dataInicial);
 				request.setAttribute("dataFinal", dataFinal);
 				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
+				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				List<ModelLogin> modelLogins= null;
+				
+				if(dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					 modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request));
+				}else {
+					modelLogins =  daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request),dataInicial,dataFinal);
+				}
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				params.put("PARAM_SUB_REPORT", request.getServletContext().getRealPath("relatorio") + File.separator );
+				
+				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params, request.getServletContext());
+				response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
+				response.getOutputStream().write(relatorio);
 				
 			}else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
