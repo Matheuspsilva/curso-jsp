@@ -1,8 +1,12 @@
 package filter;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Scanner;
 
 import connection.SingleConnectionBanco;
 import jakarta.servlet.FilterChain;
@@ -15,6 +19,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import dao.DaoVersionadorBanco;
 
 @WebFilter(urlPatterns = { "/principal/*" }) /* Intercepta todas as requisições que vierem do projeto ou mapeamento */
 public class FilterAutenticacao extends HttpFilter {
@@ -87,6 +92,50 @@ public class FilterAutenticacao extends HttpFilter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		connection = SingleConnectionBanco.getConnection();
+		
+		DaoVersionadorBanco daoVersionadorBanco = new DaoVersionadorBanco();
+		
+		String caminhoPastaSQL = fConfig.getServletContext().getRealPath("versionadorbancosql") + File.separator;
+		
+		File[] filesSql = new File(caminhoPastaSQL).listFiles();
+		
+		System.out.println("teste");
+		
+		try {
+			
+			for (File file : filesSql) {
+				boolean arquivoJaRodado = daoVersionadorBanco.ArquivoSqlRodado(file.getName());
+				
+				if(!arquivoJaRodado) {
+					FileInputStream entradaArquivo = new FileInputStream(file);
+					
+					Scanner lerArquivo = new Scanner(entradaArquivo, "UTF-8");
+					
+					StringBuilder sql = new StringBuilder();
+					
+					while(lerArquivo.hasNext()) {
+						sql.append(lerArquivo.nextLine());
+						sql.append("\n");
+					}
+					
+					connection.prepareStatement(sql.toString()).execute();
+					daoVersionadorBanco.gravaArquivoSqlRodado(file.getName());
+					connection.commit();
+					lerArquivo.close();
+				}
+			}
+			
+		} catch (Exception e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+
+		
 	}
 
 }
